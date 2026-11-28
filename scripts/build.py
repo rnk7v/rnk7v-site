@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Render the static portfolio; refresh public release metadata only at build time."""
+"""Render the static portfolio; refresh release metadata only with authorized access at build time."""
 import argparse
 import datetime as dt
 import json
@@ -10,7 +10,6 @@ import urllib.request
 
 ROOT = Path(__file__).resolve().parents[1]
 API = 'https://api.github.com/repos/rnk7v/actstride/releases/latest'
-RELEASE = 'https://github.com/rnk7v/actstride/releases/tag/'
 
 
 def render(source, release=None):
@@ -24,7 +23,6 @@ def render(source, release=None):
     # Only explicit metadata fields change. Historical captions stay pinned.
     replacements = [
         (r'(data-release-version>)v[0-9]+\.[0-9]+\.[0-9]+(<)', tag, 1),
-        (r'(data-release-link href=")https://github\.com/rnk7v/actstride/releases/tag/v[0-9]+\.[0-9]+\.[0-9]+(")', RELEASE + tag, 1),
         (r'(data-release-date>)[^<]+(<)', date, 1),
     ]
     for pattern, value, expected in replacements:
@@ -45,7 +43,7 @@ def fetch():
 def main():
     p = argparse.ArgumentParser()
     group = p.add_mutually_exclusive_group()
-    group.add_argument('--refresh', action='store_true', help='Fetch latest stable Actstride release; fail closed on error')
+    group.add_argument('--refresh', action='store_true', help='Fetch latest stable Actstride release with authorized access; fail closed on error')
     group.add_argument('--release-json', type=Path, help='Offline test fixture')
     p.add_argument('--output', type=Path, default=ROOT / 'dist/index.html')
     args = p.parse_args()

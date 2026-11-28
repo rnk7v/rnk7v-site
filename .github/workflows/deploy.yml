@@ -3,8 +3,6 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
-  schedule:
-    - cron: '23 4 * * *'
 permissions:
   contents: read
   deployments: write
@@ -17,21 +15,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
-      - name: Prepare website and refresh public release information
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/build.py --refresh
-      - name: Check whether a scheduled deployment is needed
-        id: diff
-        shell: bash
-        run: |
-          if [[ '${{ github.event_name }}' == schedule ]] && curl -fsSL --compressed --max-time 30 https://rnk7v.pages.dev/ -o "$RUNNER_TEMP/live.html" && cmp -s dist/index.html "$RUNNER_TEMP/live.html"; then
-            echo 'needed=false' >> "$GITHUB_OUTPUT"
-          else
-            echo 'needed=true' >> "$GITHUB_OUTPUT"
-          fi
+      - name: Prepare website from bundled release metadata
+        run: python3 scripts/build.py
       - name: Deploy to Cloudflare Pages
-        if: steps.diff.outputs.needed == 'true'
         uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
