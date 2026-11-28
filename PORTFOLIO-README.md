@@ -1,10 +1,9 @@
-# rnk7v personal archive
+# rnk7v — Things worth making
 
-A single-page, framework-free portfolio. `index.html` opens independently, with a v1.5.0 release fallback and all images embedded. It does not contact GitHub from the visitor's browser.
+A concise, framework-free personal site. Open `index.html` directly for the bundled fallback. Images are embedded; no visitor-side GitHub requests, fonts or analytics are required.
 
-- `python3 scripts/build.py` renders `dist/index.html` without network access.
-- `python3 scripts/build.py --refresh` fetches the latest stable public Actstride release and updates only the two version labels, two release URLs and one date. Historical text and screenshot captions remain fixed.
-- Existing Cloudflare Pages deployment runs on push, manually, and once daily. A scheduled run skips deployment when live content matches. The existing two Cloudflare secrets are reused; no new secret is needed.
-- Development time is a manually recorded approximate elapsed period (about one week through v1.5.0), not recorded work hours or repository age.
-
-No Actstride application code is changed. The genuine images are from the released Actstride archive and the previous portfolio.
+- `python3 scripts/build.py` renders `dist/index.html` offline.
+- `python3 scripts/build.py --refresh` fetches the latest stable public Actstride release and refreshes the single version label, release URL and date. Historical screenshots and milestones remain pinned to their documented release.
+- The existing GitHub Actions workflow deploys to Cloudflare Pages on pushes to main, manual dispatch and a daily schedule. Scheduled runs skip identical live content.
+- The approximate one-week build period is elapsed time through v1.5.0, not measured working hours.
+- The Actstride application, its repository and its deployment are independent and are not modified by this site.

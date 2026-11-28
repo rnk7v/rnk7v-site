@@ -23,8 +23,8 @@ def render(source, release=None):
     date = f'{published.strftime("%b")} {published.day}, {published.year}'
     # Only explicit metadata fields change. Historical captions stay pinned.
     replacements = [
-        (r'(data-release-version>)v[0-9]+\.[0-9]+\.[0-9]+(<)', tag, 2),
-        (r'(data-release-link href=")https://github\.com/rnk7v/actstride/releases/tag/v[0-9]+\.[0-9]+\.[0-9]+(")', RELEASE + tag, 2),
+        (r'(data-release-version>)v[0-9]+\.[0-9]+\.[0-9]+(<)', tag, 1),
+        (r'(data-release-link href=")https://github\.com/rnk7v/actstride/releases/tag/v[0-9]+\.[0-9]+\.[0-9]+(")', RELEASE + tag, 1),
         (r'(data-release-date>)[^<]+(<)', date, 1),
     ]
     for pattern, value, expected in replacements:
